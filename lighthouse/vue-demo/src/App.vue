@@ -128,14 +128,25 @@ const outputJson = ref('')
 const jsonError = ref('')
 const copiedJson = ref(false)
 
+const base64CopyTimer = ref(null)
+const jsonCopyTimer = ref(null)
+
 const resetBase64Status = () => {
   base64Error.value = ''
   copiedBase64.value = false
+  if (base64CopyTimer.value) {
+    clearTimeout(base64CopyTimer.value)
+    base64CopyTimer.value = null
+  }
 }
 
 const resetJsonStatus = () => {
   jsonError.value = ''
   copiedJson.value = false
+  if (jsonCopyTimer.value) {
+    clearTimeout(jsonCopyTimer.value)
+    jsonCopyTimer.value = null
+  }
 }
 
 const toBase64 = (value) => {
@@ -177,6 +188,10 @@ const copyBase64 = async () => {
   try {
     await navigator.clipboard.writeText(outputBase64.value)
     copiedBase64.value = true
+    base64CopyTimer.value = setTimeout(() => {
+      copiedBase64.value = false
+      base64CopyTimer.value = null
+    }, 2000)
   } catch (error) {
     base64Error.value = 'Copy failed. Please copy the output manually.'
   }
@@ -199,6 +214,10 @@ const copyJson = async () => {
   try {
     await navigator.clipboard.writeText(outputJson.value)
     copiedJson.value = true
+    jsonCopyTimer.value = setTimeout(() => {
+      copiedJson.value = false
+      jsonCopyTimer.value = null
+    }, 2000)
   } catch (error) {
     jsonError.value = 'Copy failed. Please copy the output manually.'
   }
