@@ -23,6 +23,20 @@ describe('formatJsonInput', () => {
     expect(result.value).toBe('{\n  "a": 1,\n  "b": 2\n}')
   })
 
+  it('formats JSON inside a log prefix', () => {
+    const input = 'INFO 2024-10-01 {"status":200,"ok":true}'
+    const result = formatJsonInput(input)
+    expect(result.ok).toBe(true)
+    expect(result.value).toBe('{\n  "status": 200,\n  "ok": true\n}')
+  })
+
+  it('formats unicode escapes in JSON strings', () => {
+    const input = '"{\\"message\\":\\"\\\\u4f60\\\\u597d\\"}"'
+    const result = formatJsonInput(input)
+    expect(result.ok).toBe(true)
+    expect(result.value).toBe('{\n  "message": "你好"\n}')
+  })
+
   it('returns friendly error for empty input', () => {
     const result = formatJsonInput('   ')
     expect(result.ok).toBe(false)
