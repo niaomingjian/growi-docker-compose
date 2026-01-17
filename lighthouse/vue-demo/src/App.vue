@@ -114,6 +114,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import { formatJsonInput } from './utils/jsonFormatter'
 
 const activeTool = ref('base64')
 
@@ -181,60 +182,15 @@ const copyBase64 = async () => {
   }
 }
 
-const tryParseJson = (value) => {
-  try {
-    return { ok: true, data: JSON.parse(value) }
-  } catch (error) {
-    return { ok: false, error }
-  }
-}
-
-const extractEmbeddedJson = (data) => {
-  if (typeof data === 'string') {
-    return data
-  }
-
-  if (data && typeof data === 'object') {
-    const keys = Object.keys(data)
-    if (keys.length === 1 && typeof data[keys[0]] === 'string') {
-      return data[keys[0]]
-    }
-  }
-
-  return null
-}
-
 const handleFormatJson = () => {
   resetJsonStatus()
-  const raw = inputJson.value.trim()
-  if (!raw) {
-    jsonError.value = 'Please enter JSON content to format.'
+  const result = formatJsonInput(inputJson.value)
+  if (result.ok) {
+    outputJson.value = result.value
     return
   }
 
-  const firstPass = tryParseJson(raw)
-  if (firstPass.ok) {
-    const embedded = extractEmbeddedJson(firstPass.data)
-    if (embedded) {
-      const secondPass = tryParseJson(embedded)
-      if (secondPass.ok) {
-        outputJson.value = JSON.stringify(secondPass.data, null, 2)
-        return
-      }
-    }
-
-    outputJson.value = JSON.stringify(firstPass.data, null, 2)
-    return
-  }
-
-  const unescaped = raw.replace(/\\"/g, '"').replace(/\\n/g, '\n').replace(/\\t/g, '\t')
-  const fallback = tryParseJson(unescaped)
-  if (fallback.ok) {
-    outputJson.value = JSON.stringify(fallback.data, null, 2)
-    return
-  }
-
-  jsonError.value = 'JSON parsing failed. Please check the input format.'
+  jsonError.value = result.error
 }
 
 const copyJson = async () => {
