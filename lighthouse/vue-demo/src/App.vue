@@ -39,7 +39,12 @@
 
         <div class="panel-body" v-if="activeTool === 'base64'">
           <label class="field">
-            <span>Input</span>
+            <div class="field-header">
+              <span>Input</span>
+              <button class="ghost" type="button" @click="clearBase64">
+                Clear
+              </button>
+            </div>
             <textarea
               v-model="inputBase64"
               rows="6"
@@ -81,7 +86,12 @@
 
         <div class="panel-body" v-else>
           <label class="field">
-            <span>Input</span>
+            <div class="field-header">
+              <span>Input</span>
+              <button class="ghost" type="button" @click="clearJson">
+                Clear
+              </button>
+            </div>
             <textarea
               v-model="inputJson"
               rows="8"
@@ -154,6 +164,18 @@ const resetBase64Status = () => {
   }
 }
 
+
+const clearBase64 = () => {
+  inputBase64.value = ''
+  outputBase64.value = ''
+  resetBase64Status()
+}
+
+const clearJson = () => {
+  inputJson.value = ''
+  outputJson.value = ''
+  resetJsonStatus()
+}
 const resetJsonStatus = () => {
   jsonError.value = ''
   copiedJson.value = false
