@@ -175,6 +175,11 @@ textarea:focus {
   position: relative;
 }
 
+.output textarea {
+  width: 100%;
+  display: block;
+}
+
 .copy {
   position: absolute;
   right: 1rem;
