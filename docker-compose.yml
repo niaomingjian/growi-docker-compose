@@ -79,6 +79,11 @@ services:
     volumes:
       - page_bulk_export_tmp:/tmp/page-bulk-export
 
+  vue-demo:
+    build:
+      context: ./lighthouse/vue-demo
+    restart: unless-stopped
+
 volumes:
   growi_data:
   mongo_configdb:

@@ -10,9 +10,10 @@ services:
       - '443:443'
     links:
       - app:app
+      - vue-demo:vue-demo
     environment:
-      DOMAINS: 'lmmqxyx.online -> http://app:3000'
-      STAGE: 'production'
+      DOMAINS: 'lmmqxyx.online -> http://app:3000, wiki.lmmqxyx.online => https://lmmqxyx.online, tools.lmmqxyx.online -> http://vue-demo:4173'
+      STAGE: 'staging'
       FORCE_RENEW: 'false'
       WEBSOCKET: 'true'
       CLIENT_MAX_BODY_SIZE: 0
