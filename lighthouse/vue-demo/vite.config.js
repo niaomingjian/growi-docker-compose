@@ -6,10 +6,11 @@ export default defineConfig({
   server: {
     host: true,
     port: 5173,
-    allowedHosts: 'tools.lmmqxyx.online'
+    allowedHosts: ['tools.lmmqxyx.online']
   },
   preview: {
     host: true,
     port: 4173,
+    allowedHosts: ['tools.lmmqxyx.online'],
   },
 })
