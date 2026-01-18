@@ -52,8 +52,8 @@
             <button class="ghost" type="button" @click="handleDecode">Decode</button>
           </div>
 
-          <div class="feedback" :class="{ error: base64Error }" role="status">
-            {{ base64Error || 'Ready.' }}
+          <div v-if="base64Error" class="feedback error" role="status">
+            {{ base64Error }}
           </div>
 
           <label class="field">
@@ -88,8 +88,8 @@
             </button>
           </div>
 
-          <div class="feedback" :class="{ error: jsonError }" role="status">
-            {{ jsonError || 'Ready.' }}
+          <div v-if="jsonError" class="feedback error" role="status">
+            {{ jsonError }}
           </div>
 
           <label class="field">
