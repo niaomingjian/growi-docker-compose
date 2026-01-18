@@ -16,6 +16,14 @@
         </button>
         <button
           class="menu-item"
+          :class="{ 'is-active': activeTool === 'url' }"
+          type="button"
+          @click="activeTool = 'url'"
+        >
+          {{ t('menu.url') }}
+        </button>
+        <button
+          class="menu-item"
           :class="{ 'is-active': activeTool === 'json' }"
           type="button"
           @click="activeTool = 'json'"
@@ -29,6 +37,10 @@
           <div v-if="activeTool === 'base64'">
             <p class="eyebrow">{{ t('tool.base64.eyebrow') }}</p>
             <h2>{{ t('tool.base64.title') }}</h2>
+          </div>
+          <div v-else-if="activeTool === 'url'">
+            <p class="eyebrow">{{ t('tool.url.eyebrow') }}</p>
+            <h2>{{ t('tool.url.title') }}</h2>
           </div>
           <div v-else>
             <p class="eyebrow">{{ t('tool.json.eyebrow') }}</p>
@@ -106,6 +118,57 @@
             <div class="output">
               <textarea
                 :value="outputBase64"
+                rows="6"
+                readonly
+                :placeholder="t('placeholders.output')"
+              ></textarea>
+            </div>
+          </label>
+        </div>
+
+        <div class="panel-body" v-else-if="activeTool === 'url'">
+          <label class="field">
+            <div class="field-header">
+              <span>{{ t('fields.input') }}</span>
+              <button class="ghost" type="button" @click="clearUrl">
+                {{ t('actions.clear') }}
+              </button>
+            </div>
+            <textarea
+              v-model="inputUrl"
+              rows="6"
+              :placeholder="t('placeholders.urlInput')"
+            ></textarea>
+          </label>
+
+          <div class="actions">
+            <button class="primary" type="button" @click="handleUrlEncode">
+              {{ t('actions.encode') }}
+            </button>
+            <button class="ghost" type="button" @click="handleUrlDecode">
+              {{ t('actions.decode') }}
+            </button>
+          </div>
+
+          <div v-if="urlError" class="feedback error" role="status">
+            {{ urlError }}
+          </div>
+
+          <label class="field">
+            <div class="field-header">
+              <span>{{ t('fields.output') }}</span>
+              <button
+                class="copy"
+                type="button"
+                @click="copyUrl"
+                :disabled="!outputUrl"
+              >
+                {{ copiedUrl ? t('actions.copied') : t('actions.copy') }}
+              </button>
+            </div>
+            <div class="output">
+              <textarea
+                :value="outputUrl"
                 rows="6"
                 readonly
                 :placeholder="t('placeholders.output')"
@@ -225,12 +288,18 @@ const outputBase64 = ref('')
 const base64Error = ref('')
 const copiedBase64 = ref(false)
 
+const inputUrl = ref('')
+const outputUrl = ref('')
+const urlError = ref('')
+const copiedUrl = ref(false)
+
 const inputJson = ref('')
 const outputJson = ref('')
 const jsonError = ref('')
 const copiedJson = ref(false)
 
 const base64CopyTimer = ref(null)
+const urlCopyTimer = ref(null)
 const jsonCopyTimer = ref(null)
 
 const resetBase64Status = () => {
@@ -249,6 +318,12 @@ const clearBase64 = () => {
   resetBase64Status()
 }
 
+const clearUrl = () => {
+  inputUrl.value = ''
+  outputUrl.value = ''
+  resetUrlStatus()
+}
+
 const clearJson = () => {
   inputJson.value = ''
   outputJson.value = ''
@@ -260,6 +335,15 @@ const resetJsonStatus = () => {
   if (jsonCopyTimer.value) {
     clearTimeout(jsonCopyTimer.value)
     jsonCopyTimer.value = null
+  }
+}
+
+const resetUrlStatus = () => {
+  urlError.value = ''
+  copiedUrl.value = false
+  if (urlCopyTimer.value) {
+    clearTimeout(urlCopyTimer.value)
+    urlCopyTimer.value = null
   }
 }
 
@@ -308,6 +392,39 @@ const copyBase64 = async () => {
     }, 2000)
   } catch (error) {
     base64Error.value = t('errors.copy')
+  }
+}
+
+const handleUrlEncode = () => {
+  resetUrlStatus()
+  try {
+    outputUrl.value = encodeURIComponent(inputUrl.value)
+  } catch (error) {
+    urlError.value = t('errors.urlEncode')
+  }
+}
+
+const handleUrlDecode = () => {
+  resetUrlStatus()
+  try {
+    outputUrl.value = decodeURIComponent(inputUrl.value.trim())
+  } catch (error) {
+    urlError.value = t('errors.urlDecode')
+  }
+}
+
+const copyUrl = async () => {
+  resetUrlStatus()
+  if (!outputUrl.value) return
+  try {
+    await navigator.clipboard.writeText(outputUrl.value)
+    copiedUrl.value = true
+    urlCopyTimer.value = setTimeout(() => {
+      copiedUrl.value = false
+      urlCopyTimer.value = null
+    }, 2000)
+  } catch (error) {
+    urlError.value = t('errors.copy')
   }
 }
 

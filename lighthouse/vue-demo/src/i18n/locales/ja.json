@@ -6,12 +6,17 @@
   },
   "menu": {
     "base64": "Base64 エンコード / デコード",
+    "url": "URL エンコード / デコード",
     "json": "JSON フォーマッター"
   },
   "tool": {
     "base64": {
       "eyebrow": "Base64",
       "title": "安全にエンコード / デコード"
+    },
+    "url": {
+      "eyebrow": "URL",
+      "title": "URL をエンコード / デコード"
     },
     "json": {
       "eyebrow": "JSON",
@@ -32,12 +37,15 @@
   },
   "placeholders": {
     "base64Input": "エンコード/デコードするテキストを入力。",
+    "urlInput": "エンコード/デコードするテキストを入力。",
     "jsonInput": "JSON またはエスケープ済みログを貼り付け。",
     "output": "まだ出力はありません。"
   },
   "errors": {
     "base64Encode": "エンコードに失敗しました。入力を確認してください。",
     "base64Decode": "デコードに失敗しました。Base64 の形式を確認してください。",
+    "urlEncode": "エンコードに失敗しました。入力を確認してください。",
+    "urlDecode": "デコードに失敗しました。URL エンコード形式を確認してください。",
     "copy": "コピーに失敗しました。手動でコピーしてください。",
     "jsonEmpty": "整形する JSON を入力してください。",
     "jsonParseFailed": "JSON の解析に失敗しました。入力形式を確認してください。"

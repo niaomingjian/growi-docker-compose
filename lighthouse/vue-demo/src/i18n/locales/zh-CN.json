@@ -6,12 +6,17 @@
   },
   "menu": {
     "base64": "Base64 编码 / 解码",
+    "url": "URL 编码 / 解码",
     "json": "JSON 格式化"
   },
   "tool": {
     "base64": {
       "eyebrow": "Base64",
       "title": "安全地编码与解码"
+    },
+    "url": {
+      "eyebrow": "URL",
+      "title": "对 URL 进行编码与解码"
     },
     "json": {
       "eyebrow": "JSON",
@@ -32,12 +37,15 @@
   },
   "placeholders": {
     "base64Input": "粘贴或输入要编码/解码的文本。",
+    "urlInput": "粘贴或输入要编码/解码的文本。",
     "jsonInput": "粘贴 JSON 或转义后的日志内容。",
     "output": "暂无输出。"
   },
   "errors": {
     "base64Encode": "编码失败，请检查输入后重试。",
     "base64Decode": "解码失败，请确认输入是有效的 Base64。",
+    "urlEncode": "编码失败，请检查输入后重试。",
+    "urlDecode": "解码失败，请确认输入是有效的 URL 编码。",
     "copy": "复制失败，请手动复制输出内容。",
     "jsonEmpty": "请输入要格式化的 JSON 内容。",
     "jsonParseFailed": "JSON 解析失败，请检查输入格式。"

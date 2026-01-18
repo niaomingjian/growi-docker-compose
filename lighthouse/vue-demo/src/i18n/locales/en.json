@@ -6,12 +6,17 @@
   },
   "menu": {
     "base64": "Base64 Encode / Decode",
+    "url": "URL Encode / Decode",
     "json": "JSON Formatter"
   },
   "tool": {
     "base64": {
       "eyebrow": "Base64",
       "title": "Encode and decode safely"
+    },
+    "url": {
+      "eyebrow": "URL",
+      "title": "Encode and decode URLs"
     },
     "json": {
       "eyebrow": "JSON",
@@ -32,12 +37,15 @@
   },
   "placeholders": {
     "base64Input": "Paste or type text to encode or decode.",
+    "urlInput": "Paste or type text to encode or decode.",
     "jsonInput": "Paste JSON or escaped JSON log output.",
     "output": "No output yet."
   },
   "errors": {
     "base64Encode": "Encoding failed. Please check the input and try again.",
     "base64Decode": "Decoding failed. Please ensure the input is valid Base64.",
+    "urlEncode": "Encoding failed. Please check the input and try again.",
+    "urlDecode": "Decoding failed. Please ensure the input is valid URL encoding.",
     "copy": "Copy failed. Please copy the output manually.",
     "jsonEmpty": "Please enter JSON content to format.",
     "jsonParseFailed": "JSON parsing failed. Please check the input format."
