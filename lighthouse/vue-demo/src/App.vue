@@ -35,12 +35,34 @@
             <h2>{{ t('tool.json.title') }}</h2>
           </div>
           <div class="panel-meta">
-            <label class="lang-label" for="lang-select">{{ t('settings.language') }}</label>
-            <select id="lang-select" class="lang-select" v-model="currentLocale">
-              <option value="en">{{ t('settings.langEnglish') }}</option>
-              <option value="zh-CN">{{ t('settings.langChinese') }}</option>
-              <option value="ja">{{ t('settings.langJapanese') }}</option>
-            </select>
+            <label class="lang-label" for="lang-trigger">{{ t('settings.language') }}</label>
+            <div class="lang-select" ref="langRef">
+              <button
+                id="lang-trigger"
+                class="lang-trigger"
+                type="button"
+                aria-haspopup="listbox"
+                :aria-expanded="isLangOpen"
+                @click="toggleLang"
+              >
+                <span>{{ currentLangLabel }}</span>
+                <span class="lang-chevron" aria-hidden="true">▾</span>
+              </button>
+              <div v-if="isLangOpen" class="lang-menu" role="listbox">
+                <button
+                  v-for="option in langOptions"
+                  :key="option.value"
+                  class="lang-option"
+                  :class="{ active: currentLocale === option.value }"
+                  type="button"
+                  role="option"
+                  :aria-selected="currentLocale === option.value"
+                  @click="selectLang(option.value)"
+                >
+                  {{ t(option.labelKey) }}
+                </button>
+              </div>
+            </div>
             <span class="tag">{{ t('app.tag') }}</span>
           </div>
         </header>
@@ -145,14 +167,55 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { formatJsonInput } from './utils/jsonFormatter'
 import { useI18n } from './i18n'
 
 const { locale, setLocale, t } = useI18n()
+const langRef = ref(null)
+const isLangOpen = ref(false)
+const langOptions = [
+  { value: 'en', labelKey: 'settings.langEnglish' },
+  { value: 'zh-CN', labelKey: 'settings.langChinese' },
+  { value: 'ja', labelKey: 'settings.langJapanese' }
+]
+
 const currentLocale = computed({
   get: () => locale.value,
   set: (value) => setLocale(value)
+})
+
+const currentLangLabel = computed(() => {
+  const option = langOptions.find((item) => item.value == currentLocale.value)
+  return option ? t(option.labelKey) : t('settings.langEnglish')
+})
+
+const toggleLang = () => {
+  isLangOpen.value = !isLangOpen.value
+}
+
+const closeLang = () => {
+  isLangOpen.value = false
+}
+
+const selectLang = (value) => {
+  setLocale(value)
+  closeLang()
+}
+
+const handleClickOutside = (event) => {
+  if (!langRef.value) return
+  if (!langRef.value.contains(event.target)) {
+    closeLang()
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside)
 })
 
 const activeTool = ref('base64')
