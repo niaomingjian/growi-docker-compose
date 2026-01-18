@@ -57,9 +57,8 @@
           </div>
 
           <label class="field">
-            <span>Output</span>
-            <div class="output">
-              <textarea :value="outputBase64" rows="6" readonly></textarea>
+            <div class="field-header">
+              <span>Output</span>
               <button
                 class="copy"
                 type="button"
@@ -68,6 +67,14 @@
               >
                 {{ copiedBase64 ? 'Copied' : 'Copy' }}
               </button>
+            </div>
+            <div class="output">
+              <textarea
+                :value="outputBase64"
+                rows="6"
+                readonly
+                placeholder="No output yet."
+              ></textarea>
             </div>
           </label>
         </div>
@@ -93,9 +100,8 @@
           </div>
 
           <label class="field">
-            <span>Output</span>
-            <div class="output">
-              <textarea :value="outputJson" rows="10" readonly></textarea>
+            <div class="field-header">
+              <span>Output</span>
               <button
                 class="copy"
                 type="button"
@@ -104,6 +110,14 @@
               >
                 {{ copiedJson ? 'Copied' : 'Copy' }}
               </button>
+            </div>
+            <div class="output">
+              <textarea
+                :value="outputJson"
+                rows="10"
+                readonly
+                placeholder="No output yet."
+              ></textarea>
             </div>
           </label>
         </div>
