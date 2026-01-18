@@ -7,6 +7,7 @@
   "menu": {
     "base64": "Base64 编码 / 解码",
     "url": "URL 编码 / 解码",
+    "timestamp": "时间戳转换",
     "json": "JSON 格式化"
   },
   "tool": {
@@ -18,6 +19,10 @@
       "eyebrow": "URL",
       "title": "对 URL 进行编码与解码"
     },
+    "timestamp": {
+      "eyebrow": "时间戳",
+      "title": "在 Unix 与 ISO 之间转换"
+    },
     "json": {
       "eyebrow": "JSON",
       "title": "格式化为易读 JSON"
@@ -25,12 +30,15 @@
   },
   "fields": {
     "input": "输入",
+    "unit": "单位",
     "output": "输出"
   },
   "actions": {
     "clear": "清空",
     "encode": "编码",
     "decode": "解码",
+    "toIso": "转为 ISO",
+    "toUnix": "转为 Unix",
     "formatJson": "格式化 JSON",
     "copy": "复制",
     "copied": "已复制"
@@ -38,8 +46,13 @@
   "placeholders": {
     "base64Input": "粘贴或输入要编码/解码的文本。",
     "urlInput": "粘贴或输入要编码/解码的文本。",
+    "timestampInput": "输入 Unix 时间戳或 ISO 时间字符串。",
     "jsonInput": "粘贴 JSON 或转义后的日志内容。",
     "output": "暂无输出。"
+  },
+  "units": {
+    "seconds": "秒",
+    "milliseconds": "毫秒"
   },
   "errors": {
     "base64Encode": "编码失败，请检查输入后重试。",
@@ -47,6 +60,10 @@
     "urlEncode": "编码失败，请检查输入后重试。",
     "urlDecode": "解码失败，请确认输入是有效的 URL 编码。",
     "copy": "复制失败，请手动复制输出内容。",
+    "timestampEmpty": "请输入要转换的 Unix 时间戳。",
+    "timestampInvalid": "Unix 时间戳无效，请检查输入与单位。",
+    "isoEmpty": "请输入要转换的 ISO 时间。",
+    "isoInvalid": "ISO 时间格式无效，请检查输入。",
     "jsonEmpty": "请输入要格式化的 JSON 内容。",
     "jsonParseFailed": "JSON 解析失败，请检查输入格式。"
   },

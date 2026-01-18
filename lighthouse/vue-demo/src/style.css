@@ -250,6 +250,31 @@ textarea {
   color: var(--text-2);
 }
 
+.field-inline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 0.9rem;
+  color: var(--text-2);
+}
+
+.unit-select {
+  min-height: 40px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-strong);
+  background: #ffffff;
+  color: var(--text-1);
+  padding: 0 var(--space-3);
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+.unit-select:focus-visible {
+  outline: 2px solid rgba(37, 99, 235, 0.5);
+  outline-offset: 2px;
+  border-color: rgba(37, 99, 235, 0.55);
+}
+
 .field-header {
   display: flex;
   align-items: center;

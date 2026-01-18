@@ -7,6 +7,7 @@
   "menu": {
     "base64": "Base64 エンコード / デコード",
     "url": "URL エンコード / デコード",
+    "timestamp": "タイムスタンプ変換",
     "json": "JSON フォーマッター"
   },
   "tool": {
@@ -18,6 +19,10 @@
       "eyebrow": "URL",
       "title": "URL をエンコード / デコード"
     },
+    "timestamp": {
+      "eyebrow": "Timestamp",
+      "title": "Unix と ISO を相互変換"
+    },
     "json": {
       "eyebrow": "JSON",
       "title": "読みやすい JSON に整形"
@@ -25,12 +30,15 @@
   },
   "fields": {
     "input": "入力",
+    "unit": "単位",
     "output": "出力"
   },
   "actions": {
     "clear": "クリア",
     "encode": "エンコード",
     "decode": "デコード",
+    "toIso": "ISO へ",
+    "toUnix": "Unix へ",
     "formatJson": "JSON を整形",
     "copy": "コピー",
     "copied": "コピー済み"
@@ -38,8 +46,13 @@
   "placeholders": {
     "base64Input": "エンコード/デコードするテキストを入力。",
     "urlInput": "エンコード/デコードするテキストを入力。",
+    "timestampInput": "Unix タイムスタンプまたは ISO 文字列を入力。",
     "jsonInput": "JSON またはエスケープ済みログを貼り付け。",
     "output": "まだ出力はありません。"
+  },
+  "units": {
+    "seconds": "秒",
+    "milliseconds": "ミリ秒"
   },
   "errors": {
     "base64Encode": "エンコードに失敗しました。入力を確認してください。",
@@ -47,6 +60,10 @@
     "urlEncode": "エンコードに失敗しました。入力を確認してください。",
     "urlDecode": "デコードに失敗しました。URL エンコード形式を確認してください。",
     "copy": "コピーに失敗しました。手動でコピーしてください。",
+    "timestampEmpty": "Unix タイムスタンプを入力してください。",
+    "timestampInvalid": "Unix タイムスタンプが無効です。入力と単位を確認してください。",
+    "isoEmpty": "ISO タイムスタンプを入力してください。",
+    "isoInvalid": "ISO タイムスタンプが無効です。入力を確認してください。",
     "jsonEmpty": "整形する JSON を入力してください。",
     "jsonParseFailed": "JSON の解析に失敗しました。入力形式を確認してください。"
   },

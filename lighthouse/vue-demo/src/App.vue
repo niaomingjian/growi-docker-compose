@@ -24,6 +24,14 @@
         </button>
         <button
           class="menu-item"
+          :class="{ 'is-active': activeTool === 'timestamp' }"
+          type="button"
+          @click="activeTool = 'timestamp'"
+        >
+          {{ t('menu.timestamp') }}
+        </button>
+        <button
+          class="menu-item"
           :class="{ 'is-active': activeTool === 'json' }"
           type="button"
           @click="activeTool = 'json'"
@@ -41,6 +49,10 @@
           <div v-else-if="activeTool === 'url'">
             <p class="eyebrow">{{ t('tool.url.eyebrow') }}</p>
             <h2>{{ t('tool.url.title') }}</h2>
+          </div>
+          <div v-else-if="activeTool === 'timestamp'">
+            <p class="eyebrow">{{ t('tool.timestamp.eyebrow') }}</p>
+            <h2>{{ t('tool.timestamp.title') }}</h2>
           </div>
           <div v-else>
             <p class="eyebrow">{{ t('tool.json.eyebrow') }}</p>
@@ -177,6 +189,65 @@
           </label>
         </div>
 
+        <div class="panel-body" v-else-if="activeTool === 'timestamp'">
+          <label class="field">
+            <div class="field-header">
+              <span>{{ t('fields.input') }}</span>
+              <button class="ghost" type="button" @click="clearTimestamp">
+                {{ t('actions.clear') }}
+              </button>
+            </div>
+            <textarea
+              v-model="inputTimestamp"
+              rows="4"
+              :placeholder="t('placeholders.timestampInput')"
+            ></textarea>
+          </label>
+
+          <div class="field-inline">
+            <span class="field-label">{{ t('fields.unit') }}</span>
+            <select v-model="timestampUnit" class="unit-select">
+              <option value="seconds">{{ t('units.seconds') }}</option>
+              <option value="milliseconds">{{ t('units.milliseconds') }}</option>
+            </select>
+          </div>
+
+          <div class="actions">
+            <button class="primary" type="button" @click="handleTimestampToIso">
+              {{ t('actions.toIso') }}
+            </button>
+            <button class="ghost" type="button" @click="handleTimestampToUnix">
+              {{ t('actions.toUnix') }}
+            </button>
+          </div>
+
+          <div v-if="timestampError" class="feedback error" role="status">
+            {{ timestampError }}
+          </div>
+
+          <label class="field">
+            <div class="field-header">
+              <span>{{ t('fields.output') }}</span>
+              <button
+                class="copy"
+                type="button"
+                @click="copyTimestamp"
+                :disabled="!outputTimestamp"
+              >
+                {{ copiedTimestamp ? t('actions.copied') : t('actions.copy') }}
+              </button>
+            </div>
+            <div class="output">
+              <textarea
+                :value="outputTimestamp"
+                rows="4"
+                readonly
+                :placeholder="t('placeholders.output')"
+              ></textarea>
+            </div>
+          </label>
+        </div>
+
         <div class="panel-body" v-else>
           <label class="field">
             <div class="field-header">
@@ -293,6 +364,12 @@ const outputUrl = ref('')
 const urlError = ref('')
 const copiedUrl = ref(false)
 
+const inputTimestamp = ref('')
+const outputTimestamp = ref('')
+const timestampError = ref('')
+const copiedTimestamp = ref(false)
+const timestampUnit = ref('seconds')
+
 const inputJson = ref('')
 const outputJson = ref('')
 const jsonError = ref('')
@@ -300,6 +377,7 @@ const copiedJson = ref(false)
 
 const base64CopyTimer = ref(null)
 const urlCopyTimer = ref(null)
+const timestampCopyTimer = ref(null)
 const jsonCopyTimer = ref(null)
 
 const resetBase64Status = () => {
@@ -324,6 +402,12 @@ const clearUrl = () => {
   resetUrlStatus()
 }
 
+const clearTimestamp = () => {
+  inputTimestamp.value = ''
+  outputTimestamp.value = ''
+  resetTimestampStatus()
+}
+
 const clearJson = () => {
   inputJson.value = ''
   outputJson.value = ''
@@ -344,6 +428,15 @@ const resetUrlStatus = () => {
   if (urlCopyTimer.value) {
     clearTimeout(urlCopyTimer.value)
     urlCopyTimer.value = null
+  }
+}
+
+const resetTimestampStatus = () => {
+  timestampError.value = ''
+  copiedTimestamp.value = false
+  if (timestampCopyTimer.value) {
+    clearTimeout(timestampCopyTimer.value)
+    timestampCopyTimer.value = null
   }
 }
 
@@ -425,6 +518,66 @@ const copyUrl = async () => {
     }, 2000)
   } catch (error) {
     urlError.value = t('errors.copy')
+  }
+}
+
+const handleTimestampToIso = () => {
+  resetTimestampStatus()
+  const raw = inputTimestamp.value.trim()
+  if (!raw) {
+    timestampError.value = t('errors.timestampEmpty')
+    return
+  }
+
+  const numeric = Number(raw)
+  if (!Number.isFinite(numeric)) {
+    timestampError.value = t('errors.timestampInvalid')
+    return
+  }
+
+  const milliseconds = timestampUnit.value === 'seconds' ? numeric * 1000 : numeric
+  const date = new Date(milliseconds)
+  if (Number.isNaN(date.getTime())) {
+    timestampError.value = t('errors.timestampInvalid')
+    return
+  }
+
+  outputTimestamp.value = date.toISOString()
+}
+
+const handleTimestampToUnix = () => {
+  resetTimestampStatus()
+  const raw = inputTimestamp.value.trim()
+  if (!raw) {
+    timestampError.value = t('errors.isoEmpty')
+    return
+  }
+
+  const date = new Date(raw)
+  if (Number.isNaN(date.getTime())) {
+    timestampError.value = t('errors.isoInvalid')
+    return
+  }
+
+  const milliseconds = date.getTime()
+  const value = timestampUnit.value === 'seconds'
+    ? Math.floor(milliseconds / 1000)
+    : milliseconds
+  outputTimestamp.value = String(value)
+}
+
+const copyTimestamp = async () => {
+  resetTimestampStatus()
+  if (!outputTimestamp.value) return
+  try {
+    await navigator.clipboard.writeText(outputTimestamp.value)
+    copiedTimestamp.value = true
+    timestampCopyTimer.value = setTimeout(() => {
+      copiedTimestamp.value = false
+      timestampCopyTimer.value = null
+    }, 2000)
+  } catch (error) {
+    timestampError.value = t('errors.copy')
   }
 }
 
