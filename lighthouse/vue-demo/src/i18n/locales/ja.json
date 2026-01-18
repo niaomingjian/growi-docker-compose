@@ -1,0 +1,51 @@
+{
+  "app": {
+    "toolbox": "ツールボックス",
+    "utilityLab": "ユーティリティラボ",
+    "tag": "vue-demo"
+  },
+  "menu": {
+    "base64": "Base64 エンコード / デコード",
+    "json": "JSON フォーマッター"
+  },
+  "tool": {
+    "base64": {
+      "eyebrow": "Base64",
+      "title": "安全にエンコード / デコード"
+    },
+    "json": {
+      "eyebrow": "JSON",
+      "title": "読みやすい JSON に整形"
+    }
+  },
+  "fields": {
+    "input": "入力",
+    "output": "出力"
+  },
+  "actions": {
+    "clear": "クリア",
+    "encode": "エンコード",
+    "decode": "デコード",
+    "formatJson": "JSON を整形",
+    "copy": "コピー",
+    "copied": "コピー済み"
+  },
+  "placeholders": {
+    "base64Input": "エンコード/デコードするテキストを入力。",
+    "jsonInput": "JSON またはエスケープ済みログを貼り付け。",
+    "output": "まだ出力はありません。"
+  },
+  "errors": {
+    "base64Encode": "エンコードに失敗しました。入力を確認してください。",
+    "base64Decode": "デコードに失敗しました。Base64 の形式を確認してください。",
+    "copy": "コピーに失敗しました。手動でコピーしてください。",
+    "jsonEmpty": "整形する JSON を入力してください。",
+    "jsonParseFailed": "JSON の解析に失敗しました。入力形式を確認してください。"
+  },
+  "settings": {
+    "language": "言語",
+    "langEnglish": "English",
+    "langChinese": "中文",
+    "langJapanese": "日本語"
+  }
+}

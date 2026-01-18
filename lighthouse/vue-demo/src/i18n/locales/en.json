@@ -1,0 +1,51 @@
+{
+  "app": {
+    "toolbox": "Toolbox",
+    "utilityLab": "Utility Lab",
+    "tag": "vue-demo"
+  },
+  "menu": {
+    "base64": "Base64 Encode / Decode",
+    "json": "JSON Formatter"
+  },
+  "tool": {
+    "base64": {
+      "eyebrow": "Base64",
+      "title": "Encode and decode safely"
+    },
+    "json": {
+      "eyebrow": "JSON",
+      "title": "Format clean, readable JSON"
+    }
+  },
+  "fields": {
+    "input": "Input",
+    "output": "Output"
+  },
+  "actions": {
+    "clear": "Clear",
+    "encode": "Encode",
+    "decode": "Decode",
+    "formatJson": "Format JSON",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "placeholders": {
+    "base64Input": "Paste or type text to encode or decode.",
+    "jsonInput": "Paste JSON or escaped JSON log output.",
+    "output": "No output yet."
+  },
+  "errors": {
+    "base64Encode": "Encoding failed. Please check the input and try again.",
+    "base64Decode": "Decoding failed. Please ensure the input is valid Base64.",
+    "copy": "Copy failed. Please copy the output manually.",
+    "jsonEmpty": "Please enter JSON content to format.",
+    "jsonParseFailed": "JSON parsing failed. Please check the input format."
+  },
+  "settings": {
+    "language": "Language",
+    "langEnglish": "English",
+    "langChinese": "中文",
+    "langJapanese": "日本語"
+  }
+}

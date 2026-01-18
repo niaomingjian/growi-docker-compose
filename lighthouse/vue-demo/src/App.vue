@@ -3,8 +3,8 @@
     <div class="shell">
       <aside class="menu">
         <div class="menu-header">
-          <p class="eyebrow">Toolbox</p>
-          <h1>Utility Lab</h1>
+          <p class="eyebrow">{{ t('app.toolbox') }}</p>
+          <h1>{{ t('app.utilityLab') }}</h1>
         </div>
         <button
           class="menu-item"
@@ -12,7 +12,7 @@
           type="button"
           @click="activeTool = 'base64'"
         >
-          Base64 Encode / Decode
+          {{ t('menu.base64') }}
         </button>
         <button
           class="menu-item"
@@ -20,41 +20,49 @@
           type="button"
           @click="activeTool = 'json'"
         >
-          JSON Formatter
+          {{ t('menu.json') }}
         </button>
       </aside>
 
       <section class="panel">
         <header class="panel-header">
           <div v-if="activeTool === 'base64'">
-            <p class="eyebrow">Base64</p>
-            <h2>Encode and decode safely</h2>
+            <p class="eyebrow">{{ t('tool.base64.eyebrow') }}</p>
+            <h2>{{ t('tool.base64.title') }}</h2>
           </div>
           <div v-else>
-            <p class="eyebrow">JSON</p>
-            <h2>Format clean, readable JSON</h2>
+            <p class="eyebrow">{{ t('tool.json.eyebrow') }}</p>
+            <h2>{{ t('tool.json.title') }}</h2>
           </div>
-          <span class="tag">vue-demo</span>
+          <div class="panel-meta">
+            <label class="lang-label" for="lang-select">{{ t('settings.language') }}</label>
+            <select id="lang-select" class="lang-select" v-model="currentLocale">
+              <option value="en">{{ t('settings.langEnglish') }}</option>
+              <option value="zh-CN">{{ t('settings.langChinese') }}</option>
+              <option value="ja">{{ t('settings.langJapanese') }}</option>
+            </select>
+            <span class="tag">{{ t('app.tag') }}</span>
+          </div>
         </header>
 
         <div class="panel-body" v-if="activeTool === 'base64'">
           <label class="field">
             <div class="field-header">
-              <span>Input</span>
+              <span>{{ t('fields.input') }}</span>
               <button class="ghost" type="button" @click="clearBase64">
-                Clear
+                {{ t('actions.clear') }}
               </button>
             </div>
             <textarea
               v-model="inputBase64"
               rows="6"
-              placeholder="Paste or type text to encode or decode."
+              :placeholder="t('placeholders.base64Input')"
             ></textarea>
           </label>
 
           <div class="actions">
-            <button class="primary" type="button" @click="handleEncode">Encode</button>
-            <button class="ghost" type="button" @click="handleDecode">Decode</button>
+            <button class="primary" type="button" @click="handleEncode">{{ t('actions.encode') }}</button>
+            <button class="ghost" type="button" @click="handleDecode">{{ t('actions.decode') }}</button>
           </div>
 
           <div v-if="base64Error" class="feedback error" role="status">
@@ -63,14 +71,14 @@
 
           <label class="field">
             <div class="field-header">
-              <span>Output</span>
+              <span>{{ t('fields.output') }}</span>
               <button
                 class="copy"
                 type="button"
                 @click="copyBase64"
                 :disabled="!outputBase64"
               >
-                {{ copiedBase64 ? 'Copied' : 'Copy' }}
+                {{ copiedBase64 ? t('actions.copied') : t('actions.copy') }}
               </button>
             </div>
             <div class="output">
@@ -78,7 +86,7 @@
                 :value="outputBase64"
                 rows="6"
                 readonly
-                placeholder="No output yet."
+                :placeholder="t('placeholders.output')"
               ></textarea>
             </div>
           </label>
@@ -87,21 +95,21 @@
         <div class="panel-body" v-else>
           <label class="field">
             <div class="field-header">
-              <span>Input</span>
+              <span>{{ t('fields.input') }}</span>
               <button class="ghost" type="button" @click="clearJson">
-                Clear
+                {{ t('actions.clear') }}
               </button>
             </div>
             <textarea
               v-model="inputJson"
               rows="8"
-              placeholder="Paste JSON or escaped JSON log output."
+              :placeholder="t('placeholders.jsonInput')"
             ></textarea>
           </label>
 
           <div class="actions">
             <button class="primary" type="button" @click="handleFormatJson">
-              Format JSON
+              {{ t('actions.formatJson') }}
             </button>
           </div>
 
@@ -111,14 +119,14 @@
 
           <label class="field">
             <div class="field-header">
-              <span>Output</span>
+              <span>{{ t('fields.output') }}</span>
               <button
                 class="copy"
                 type="button"
                 @click="copyJson"
                 :disabled="!outputJson"
               >
-                {{ copiedJson ? 'Copied' : 'Copy' }}
+                {{ copiedJson ? t('actions.copied') : t('actions.copy') }}
               </button>
             </div>
             <div class="output">
@@ -126,7 +134,7 @@
                 :value="outputJson"
                 rows="10"
                 readonly
-                placeholder="No output yet."
+                :placeholder="t('placeholders.output')"
               ></textarea>
             </div>
           </label>
@@ -137,8 +145,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { formatJsonInput } from './utils/jsonFormatter'
+import { useI18n } from './i18n'
+
+const { locale, setLocale, t } = useI18n()
+const currentLocale = computed({
+  get: () => locale.value,
+  set: (value) => setLocale(value)
+})
 
 const activeTool = ref('base64')
 
@@ -205,7 +220,7 @@ const handleEncode = () => {
   try {
     outputBase64.value = toBase64(inputBase64.value)
   } catch (error) {
-    base64Error.value = 'Encoding failed. Please check the input and try again.'
+    base64Error.value = t('errors.base64Encode')
   }
 }
 
@@ -214,7 +229,7 @@ const handleDecode = () => {
   try {
     outputBase64.value = fromBase64(inputBase64.value.trim())
   } catch (error) {
-    base64Error.value = 'Decoding failed. Please ensure the input is valid Base64.'
+    base64Error.value = t('errors.base64Decode')
   }
 }
 
@@ -229,7 +244,7 @@ const copyBase64 = async () => {
       base64CopyTimer.value = null
     }, 2000)
   } catch (error) {
-    base64Error.value = 'Copy failed. Please copy the output manually.'
+    base64Error.value = t('errors.copy')
   }
 }
 
@@ -241,7 +256,12 @@ const handleFormatJson = () => {
     return
   }
 
-  jsonError.value = result.error
+  const jsonErrorMap = {
+    'json.empty': () => t('errors.jsonEmpty'),
+    'json.parseFailed': () => t('errors.jsonParseFailed')
+  }
+
+  jsonError.value = jsonErrorMap[result.error]?.() ?? t('errors.jsonParseFailed')
 }
 
 const copyJson = async () => {
@@ -255,7 +275,7 @@ const copyJson = async () => {
       jsonCopyTimer.value = null
     }, 2000)
   } catch (error) {
-    jsonError.value = 'Copy failed. Please copy the output manually.'
+    jsonError.value = t('errors.copy')
   }
 }
 </script>

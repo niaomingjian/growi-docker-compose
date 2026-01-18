@@ -105,7 +105,7 @@ const normalizeInput = (raw) => {
 export const formatJsonInput = (raw) => {
   const input = normalizeInput(raw)
   if (!input) {
-    return { ok: false, error: 'Please enter JSON content to format.' }
+    return { ok: false, error: 'json.empty' }
   }
 
   let current = input
@@ -139,5 +139,5 @@ export const formatJsonInput = (raw) => {
     break
   }
 
-  return { ok: false, error: 'JSON parsing failed. Please check the input format.' }
+  return { ok: false, error: 'json.parseFailed' }
 }
